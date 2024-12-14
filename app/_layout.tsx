@@ -9,7 +9,6 @@ const RootLayout = () => {
         options={{
           title: "",
           presentation: "fullScreenModal",
-
           sheetGrabberVisible: false,
           headerShadowVisible: false,
           headerShown: true,

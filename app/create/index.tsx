@@ -1,32 +1,53 @@
+import React, { useState, useEffect } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { useWorkoutStore } from "@/store";
 import { Ionicons } from "@expo/vector-icons";
+import { differenceInSeconds } from "date-fns"; // Import necessary functions from date-fns
+import { useElapsedTime } from "@/hooks/useElapsedTime";
 
 const Page = () => {
   const router = useRouter();
-  const { workout, setWorkout, clearWorkout } = useWorkoutStore();
+  const { workout, setWorkout, clearWorkout, addExercise } = useWorkoutStore();
   const [workoutName, setWorkoutName] = useState<string>(workout.name || "");
+  // const [elapsedTime, setElapsedTime] = useState<string>("");
+  const elapsedTime = useElapsedTime(
+    workout.dateStarted ? workout.dateStarted.toISOString() : null
+  );
 
   const saveWorkout = () => {
-    setWorkout({ ...workout, name: workoutName, id: "123" });
-    console.log(workout);
+    if (!workoutName.trim()) {
+      Alert.alert("Error", "Workout name cannot be empty.");
+      return;
+    }
+    setWorkout({
+      ...workout,
+      name: workoutName,
+    });
   };
 
-  const showAlert = () => {
-    Alert.alert("Coming soon!", "", [{ text: "OK", style: "cancel" }]);
+  const addExerciseToWorkout = () => {
+    const exercise = {
+      id: (workout.exercises?.length || 0) + 1,
+      name: "Bench Press",
+      bodyPart: "Chest",
+    };
+    addExercise(exercise);
   };
 
   const cancelWorkout = () => {
     clearWorkout();
+    setWorkoutName("");
     router.dismiss();
   };
 
@@ -35,72 +56,58 @@ const Page = () => {
       <Stack.Screen
         options={{
           headerLeft: () => (
-            <View style={styles.toolbarContainer}>
-              <TouchableOpacity
-                onPress={() => router.dismiss()}
-                style={styles.toolbarButton}
-              >
-                <Text style={styles.toolbarIcon}>
-                  <Ionicons
-                    name="chevron-down"
-                    size={24}
-                    style={{ fontWeight: "bold" }}
-                  />
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={showAlert}
-                style={styles.toolbarButton}
-              >
-                <Text style={styles.toolbarIcon}>
-                  <Ionicons
-                    name="timer-outline"
-                    size={24}
-                    style={{ fontWeight: "bold" }}
-                  />
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => router.dismiss()}
+              style={styles.toolbarButton}
+              accessibilityLabel="Close"
+            >
+              <Ionicons name="chevron-down" size={24} color={""} />
+            </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={saveWorkout} style={styles.saveButton}>
+            <TouchableOpacity
+              onPress={saveWorkout}
+              style={styles.saveButton}
+              accessibilityLabel="Save Workout"
+            >
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           ),
         }}
       />
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter workout name..."
-          value={workoutName}
-          onChangeText={setWorkoutName}
-        />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView>
+          <View style={styles.container}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter workout name..."
+              value={workoutName ?? ""}
+              onChangeText={(text) => setWorkoutName(text)}
+              keyboardType="default"
+            />
 
-        <View style={{ flex: 1 }}>
-          {workout.dateStarted && (
-            <>
-              <Text>Workout ID: {workout.id}</Text>
-              <Text>Workout Name: {workout.name}</Text>
-              <Text>
-                Workout Start Time: {workout.dateStarted?.toISOString()}
-              </Text>
-              <Text>Workout Note: {workout.note}</Text>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginTop: 20,
-                }}
-                onPress={cancelWorkout}
-              >
-                <Text style={{ color: "red" }}>Cancel Workout</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-      </View>
+            <View style={{ flex: 1, justifyContent: "flex-start" }}>
+              <View style={{ gap: 10 }}>
+                {/* Display Elapsed Time */}
+                <Text>{elapsedTime}</Text>
+                <Text>{JSON.stringify(workout || {}, null, 2)}</Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={addExerciseToWorkout}
+                >
+                  <Text style={styles.buttonText}>Add Exercise</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={cancelWorkout}>
+                  <Text style={styles.buttonText}>Cancel Workout</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };
@@ -119,18 +126,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 20,
+    minWidth: 0,
   },
-  toolbarContainer: {
+  button: {
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "red",
+    fontWeight: "bold",
   },
   toolbarButton: {
     marginHorizontal: 8,
-  },
-  toolbarIcon: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "red",
   },
   saveButton: {
     marginHorizontal: 8,

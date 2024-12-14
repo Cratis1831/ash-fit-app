@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import * as Crypto from "expo-crypto";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { Stack, useRouter } from "expo-router";
 import Animated, {
   useSharedValue,
@@ -25,8 +32,10 @@ const HomeScreen = () => {
           easing: Easing.inOut(Easing.ease),
         }),
         -1,
-        true // reverse the animation
+        true // reverse animation
       );
+    } else {
+      pulseOpacity.value = 1; // Reset opacity when no workout
     }
   }, [workout]);
 
@@ -37,7 +46,13 @@ const HomeScreen = () => {
   });
 
   const handleGoToWorkout = () => {
-    setWorkout({ name: "", id: "123", dateStarted: new Date(), note: null });
+    setWorkout({
+      name: "",
+      id: Crypto.randomUUID(),
+      dateStarted: new Date(),
+      note: null,
+      exercises: [],
+    });
     router.push("/create");
   };
 
@@ -50,8 +65,9 @@ const HomeScreen = () => {
           headerRight: () =>
             workout.id && (
               <TouchableOpacity
-                onPress={handleGoToWorkout}
+                onPress={() => router.push("/create")}
                 style={styles.resumeButton}
+                accessibilityLabel="Resume your workout"
               >
                 <Animated.Text style={[styles.resumeText, animatedStyle]}>
                   Resume
@@ -65,6 +81,8 @@ const HomeScreen = () => {
           <TouchableOpacity
             style={[styles.button, styles.startButton]}
             onPress={handleGoToWorkout}
+            accessibilityLabel="Start a new workout"
+            activeOpacity={0.8}
           >
             <Text style={styles.buttonText}>Start Workout</Text>
           </TouchableOpacity>
@@ -77,7 +95,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
+    justifyContent: "flex-start", // Center vertically
     padding: 16,
     backgroundColor: "white",
   },
