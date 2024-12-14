@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import * as Crypto from "expo-crypto";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import Animated, {
   useSharedValue,
