@@ -1,3 +1,4 @@
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -5,11 +6,37 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
 import { useWorkoutStore } from "@/store";
 
 const ExerciseView = () => {
-  const { workout, setWorkout } = useWorkoutStore();
+  const { workout, setWorkout, addSet } = useWorkoutStore();
+
+  const addSetToExercise = (exerciseId: number) => {
+    // Find the exercise to ensure we're adding a set to the correct one
+    const exercise = workout.exercises.find((e) => e.id === exerciseId);
+
+    if (!exercise) {
+      return; // If exercise not found, do nothing
+    }
+
+    // Get the next set ID within the specific exercise context
+    const nextSetId = exercise.sets?.length
+      ? Math.max(...exercise.sets.map((set) => set.id)) + 1
+      : 1;
+
+    // Create a new set with the next unique ID
+    const newSet = {
+      id: nextSetId, // Generate unique ID within this exercise
+      weight: 100,
+      reps: 10,
+      completed: false,
+    };
+
+    // Add the set to the specific exercise
+    addSet(newSet, exerciseId);
+    console.log("Added set to exercise", exerciseId);
+  };
+
   return (
     <View style={styles.container}>
       {workout.exercises?.map((exercise) => (
@@ -94,7 +121,10 @@ const ExerciseView = () => {
             </View>
           ))}
 
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => addSetToExercise(exercise.id)}
+          >
             <Text style={styles.buttonText}>Add Set</Text>
           </TouchableOpacity>
         </View>
@@ -102,8 +132,6 @@ const ExerciseView = () => {
     </View>
   );
 };
-
-export default ExerciseView;
 
 const styles = StyleSheet.create({
   container: {
@@ -171,3 +199,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default ExerciseView;

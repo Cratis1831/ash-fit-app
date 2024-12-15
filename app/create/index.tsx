@@ -12,17 +12,18 @@ import {
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useWorkoutStore } from "@/store";
-import { Ionicons } from "@expo/vector-icons"; // Import necessary functions from date-fns
+import { Ionicons } from "@expo/vector-icons";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
 import ExerciseView from "@/components/ExerciseView";
 
 const Page = () => {
   const router = useRouter();
   const { workout, setWorkout, clearWorkout, addExercise } = useWorkoutStore();
-  const [workoutName, setWorkoutName] = useState<string>(workout.name || "");
-  // const [elapsedTime, setElapsedTime] = useState<string>("");
+  const [workoutName, setWorkoutNameState] = useState<string>(
+    workout.name || ""
+  );
   const elapsedTime = useElapsedTime(
-    workout.dateStarted ? workout.dateStarted.toISOString() : null
+    workout.dateStarted?.toISOString() || null
   );
 
   const saveWorkout = () => {
@@ -30,10 +31,7 @@ const Page = () => {
       Alert.alert("Error", "Workout name cannot be empty.");
       return;
     }
-    setWorkout({
-      ...workout,
-      name: workoutName,
-    });
+    setWorkout(workout); // This now updates the workout name in the store
   };
 
   const addExerciseToWorkout = () => {
@@ -42,32 +40,17 @@ const Page = () => {
       name: "Bench Press",
       bodyPart: "Chest",
       sets: [
-        {
-          id: 1,
-          weight: 100,
-          reps: 10,
-          completed: false,
-        },
-        {
-          id: 2,
-          weight: 100,
-          reps: 10,
-          completed: false,
-        },
-        {
-          id: 3,
-          weight: 100,
-          reps: 10,
-          completed: false,
-        },
+        { exerciseId: 1, id: 1, weight: 100, reps: 10, completed: false },
+        { exerciseId: 1, id: 2, weight: 100, reps: 10, completed: false },
+        { exerciseId: 1, id: 3, weight: 100, reps: 10, completed: false },
       ],
     };
-    addExercise(exercise);
+    addExercise(exercise); // This now adds an exercise via the store
   };
 
   const cancelWorkout = () => {
-    clearWorkout();
-    setWorkoutName("");
+    clearWorkout(); // This now clears the workout in the store
+    setWorkoutNameState(""); // Reset the workout name locally
     router.dismiss();
   };
 
@@ -104,27 +87,26 @@ const Page = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter workout name..."
-              value={workoutName ?? ""}
-              onChangeText={(text) => setWorkoutName(text)}
+              value={workoutName}
+              onChangeText={(text) => setWorkoutNameState(text)} // Manage locally
               keyboardType="default"
             />
 
             <View style={{ flex: 1, justifyContent: "flex-start" }}>
-              <View style={{ gap: 10 }}>
-                {/* Display Elapsed Time */}
-                <Text>{elapsedTime}</Text>
-                {/* <Text>{JSON.stringify(workout || {}, null, 2)}</Text> */}
-                <ExerciseView />
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={addExerciseToWorkout}
-                >
-                  <Text style={styles.buttonText}>Add Exercise</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={cancelWorkout}>
-                  <Text style={styles.buttonText}>Cancel Workout</Text>
-                </TouchableOpacity>
-              </View>
+              <Text>{elapsedTime}</Text>
+              <ExerciseView />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={addExerciseToWorkout}
+              >
+                <Text style={styles.buttonText}>Add Exercise</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, { paddingBottom: 24 }]}
+                onPress={cancelWorkout}
+              >
+                <Text style={styles.buttonText}>Cancel Workout</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
