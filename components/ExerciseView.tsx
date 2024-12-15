@@ -78,7 +78,11 @@ const ExerciseView = () => {
                               ...ex,
                               sets: ex.sets.map((s) =>
                                 s.id === set.id
-                                  ? { ...s, weight: parseFloat(text) }
+                                  ? {
+                                      ...s,
+                                      weight:
+                                        text === "" ? 0 : parseFloat(text),
+                                    }
                                   : s
                               ),
                             }
@@ -102,7 +106,11 @@ const ExerciseView = () => {
                               ...ex,
                               sets: ex.sets.map((s) =>
                                 s.id === set.id
-                                  ? { ...s, reps: parseInt(text, 10) }
+                                  ? {
+                                      ...s,
+                                      reps:
+                                        text === "" ? 0 : parseInt(text, 10),
+                                    }
                                   : s
                               ),
                             }
