@@ -1,9 +1,10 @@
-import { IconSymbol } from "@/app-example/components/ui/IconSymbol.ios";
+import { IconSymbol } from "@/components/ui/IconSymbol.ios";
+import { Colors } from "@/utils/constants";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 
-export default function TabLayout() {
+const TabLayout = () => {
   return (
     <Tabs
       screenOptions={{
@@ -22,7 +23,11 @@ export default function TabLayout() {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person" color={"red"} />
+            <IconSymbol
+              size={28}
+              name="person"
+              color={Colors.PRIMARY_BUTTON_TEXT}
+            />
           ),
         }}
       />
@@ -32,8 +37,13 @@ export default function TabLayout() {
         name="history"
         options={{
           tabBarLabel: "History",
+          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="timer" color={"red"} />
+            <IconSymbol
+              size={28}
+              name="timer"
+              color={Colors.PRIMARY_BUTTON_TEXT}
+            />
           ),
         }}
       />
@@ -44,11 +54,13 @@ export default function TabLayout() {
         options={{
           // title: "Home",
           tabBarLabel: "Workout",
-          tabBarLabelStyle: {
-            color: "red",
-          },
+          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="plus" color={"red"} />
+            <IconSymbol
+              size={28}
+              name="plus"
+              color={Colors.PRIMARY_BUTTON_TEXT}
+            />
           ),
         }}
       />
@@ -58,8 +70,13 @@ export default function TabLayout() {
         name="exercises"
         options={{
           tabBarLabel: "Exercises",
+          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="dumbbell" color={"red"} />
+            <IconSymbol
+              size={28}
+              name="dumbbell"
+              color={Colors.PRIMARY_BUTTON_TEXT}
+            />
           ),
         }}
       />
@@ -70,11 +87,18 @@ export default function TabLayout() {
         name="settings"
         options={{
           tabBarLabel: "Settings",
+          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="gear" color={"red"} />
+            <IconSymbol
+              size={28}
+              name="gear"
+              color={Colors.PRIMARY_BUTTON_TEXT}
+            />
           ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabLayout;

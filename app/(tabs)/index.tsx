@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as Crypto from "expo-crypto";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import Animated, {
   useSharedValue,
@@ -11,6 +11,8 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useWorkoutStore } from "@/store";
+import { Colors } from "@/utils/constants";
+import Button from "@/components/Button";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -47,7 +49,7 @@ const HomeScreen = () => {
       note: null,
       exercises: [],
     });
-    router.push("/create");
+    router.push("/create-workout");
   };
 
   return (
@@ -59,7 +61,7 @@ const HomeScreen = () => {
           headerRight: () =>
             workout.id && (
               <TouchableOpacity
-                onPress={() => router.push("/create")}
+                onPress={() => router.push("/create-workout")}
                 style={styles.resumeButton}
                 accessibilityLabel="Resume your workout"
               >
@@ -72,14 +74,11 @@ const HomeScreen = () => {
       />
       <View style={styles.container}>
         {!workout.id && (
-          <TouchableOpacity
-            style={[styles.button, styles.startButton]}
+          <Button
             onPress={handleGoToWorkout}
             accessibilityLabel="Start a new workout"
-            activeOpacity={0.8}
-          >
-            <Text style={styles.buttonText}>Start Workout</Text>
-          </TouchableOpacity>
+            text="Start Workout"
+          />
         )}
       </View>
     </>
@@ -93,26 +92,13 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "white",
   },
-  button: {
-    height: 40,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  startButton: {
-    backgroundColor: "red",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+
   resumeButton: {
     marginVertical: 10,
     marginRight: 10,
   },
   resumeText: {
-    color: "red",
+    color: Colors.PRIMARY_BUTTON_TEXT,
     fontSize: 16,
     fontWeight: "bold",
   },

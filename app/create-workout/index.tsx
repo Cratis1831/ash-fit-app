@@ -15,6 +15,7 @@ import { useWorkoutStore } from "@/store";
 import { Ionicons } from "@expo/vector-icons";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
 import ExerciseView from "@/components/ExerciseView";
+import { Colors } from "@/utils/constants";
 
 const Page = () => {
   const router = useRouter();
@@ -35,14 +36,13 @@ const Page = () => {
   };
 
   const addExerciseToWorkout = () => {
+    const eId = (workout.exercises?.length || 0) + 1;
     const exercise = {
-      id: (workout.exercises?.length || 0) + 1,
+      id: eId,
       name: "Bench Press",
       bodyPart: "Chest",
       sets: [
-        { exerciseId: 1, id: 1, weight: 100, reps: 10, completed: false },
-        { exerciseId: 1, id: 2, weight: 100, reps: 10, completed: false },
-        { exerciseId: 1, id: 3, weight: 100, reps: 10, completed: false },
+        { exerciseId: eId, id: 1, weight: "", reps: "", completed: false },
       ],
     };
     addExercise(exercise); // This now adds an exercise via the store
@@ -64,7 +64,11 @@ const Page = () => {
               style={styles.toolbarButton}
               accessibilityLabel="Close"
             >
-              <Ionicons name="chevron-down" size={24} color={"red"} />
+              <Ionicons
+                name="chevron-down"
+                size={24}
+                color={Colors.PRIMARY_BUTTON_TEXT}
+              />
             </TouchableOpacity>
           ),
           headerRight: () => (
@@ -93,7 +97,7 @@ const Page = () => {
             />
 
             <View style={{ flex: 1, justifyContent: "flex-start" }}>
-              <Text>{elapsedTime}</Text>
+              <Text style={styles.elapsedTimeText}>{elapsedTime}</Text>
               <ExerciseView />
               <TouchableOpacity
                 style={styles.button}
@@ -102,10 +106,10 @@ const Page = () => {
                 <Text style={styles.buttonText}>Add Exercise</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, { paddingBottom: 24 }]}
+                style={[styles.button, { marginTop: 24 }]}
                 onPress={cancelWorkout}
               >
-                <Text style={styles.buttonText}>Cancel Workout</Text>
+                <Text style={styles.destructiveButtonText}>Cancel Workout</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: Colors.INPUT_BORDER_COLOR,
     borderRadius: 8,
     padding: 10,
     marginBottom: 20,
@@ -137,7 +141,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: "red",
+    color: Colors.PRIMARY_BUTTON_TEXT,
+    fontWeight: "bold",
+  },
+  destructiveButtonText: {
+    color: Colors.DESTRUCTIVE_BUTTON_TEXT,
     fontWeight: "bold",
   },
   toolbarButton: {
@@ -149,6 +157,9 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "red",
+    color: Colors.PRIMARY_BUTTON_TEXT,
+  },
+  elapsedTimeText: {
+    marginBottom: 10,
   },
 });

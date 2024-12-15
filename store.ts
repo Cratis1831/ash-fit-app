@@ -1,24 +1,5 @@
 import { create } from "zustand";
-
-interface Set {
-  id: number;
-  weight: number;
-  reps: number;
-  completed: boolean;
-}
-
-interface Exercise {
-  id: number;
-  name: string;
-  bodyPart: string;
-  sets: Set[];
-}
-
-interface Workout {
-  name: string;
-  dateStarted: Date | null;
-  exercises: Exercise[];
-}
+import { Exercise, Workout, Set } from "./types";
 
 interface WorkoutStore {
   workout: Workout;
@@ -33,10 +14,20 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
     name: "",
     dateStarted: null,
     exercises: [],
+    note: "",
+    id: "",
   },
   setWorkout: (workout) => set({ workout }),
   clearWorkout: () =>
-    set({ workout: { name: "", dateStarted: null, exercises: [] } }),
+    set({
+      workout: {
+        name: "",
+        dateStarted: null,
+        note: null,
+        id: null,
+        exercises: [],
+      },
+    }),
   addExercise: (exercise) =>
     set((state) => ({
       workout: {
@@ -48,8 +39,12 @@ export const useWorkoutStore = create<WorkoutStore>((set) => ({
     set((state) => {
       const updatedExercises = state.workout.exercises.map((exercise) => {
         if (exercise.id === exerciseId) {
-          // Add the new set to the correct exercise
-          return { ...exercise, sets: [...exercise.sets, newSet] };
+          // Renumber all sets, including the new one
+          const updatedSets = [...exercise.sets, newSet].map((set, index) => ({
+            ...set,
+            id: index + 1, // Ensure sequential IDs
+          }));
+          return { ...exercise, sets: updatedSets };
         }
         return exercise;
       });
