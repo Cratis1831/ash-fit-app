@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import * as Crypto from "expo-crypto";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Stack, useRouter } from "expo-router";
@@ -58,6 +58,10 @@ const HomeScreen = () => {
         options={{
           title: "",
           headerShadowVisible: false,
+          // change background color of tab bar and header
+          headerStyle: {
+            backgroundColor: Colors.BACKGROUND_COLOR,
+          },
           headerRight: () =>
             workout.id && (
               <TouchableOpacity
@@ -90,9 +94,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start", // Center vertically
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: Colors.BACKGROUND_COLOR,
   },
-
   resumeButton: {
     marginVertical: 10,
     marginRight: 10,

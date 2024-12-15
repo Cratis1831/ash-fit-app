@@ -1,7 +1,6 @@
-import { IconSymbol } from "@/components/ui/IconSymbol.ios";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/utils/constants";
 import { Tabs } from "expo-router";
-import React from "react";
 import { Platform } from "react-native";
 
 const TabLayout = () => {
@@ -12,6 +11,8 @@ const TabLayout = () => {
           ios: {
             // Use a transparent background on iOS to show the blur effect
             position: "absolute",
+            backgroundColor: Colors.BACKGROUND_COLOR,
+            borderTopWidth: 0, // default is 1
           },
           default: {},
         }),
@@ -22,11 +23,15 @@ const TabLayout = () => {
         name="profile"
         options={{
           tabBarLabel: "Profile",
-          tabBarIcon: ({ color }) => (
+          tabBarActiveTintColor: Colors.ACTIVE_TAB_ICON,
+          tabBarInactiveTintColor: Colors.INACTIVE_TAB_ICON,
+          tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={28}
               name="person"
-              color={Colors.PRIMARY_BUTTON_TEXT}
+              color={
+                focused ? Colors.ACTIVE_TAB_ICON : Colors.INACTIVE_TAB_ICON
+              }
             />
           ),
         }}
@@ -37,12 +42,15 @@ const TabLayout = () => {
         name="history"
         options={{
           tabBarLabel: "History",
-          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
-          tabBarIcon: ({ color }) => (
+          tabBarActiveTintColor: Colors.ACTIVE_TAB_ICON,
+          tabBarInactiveTintColor: Colors.INACTIVE_TAB_ICON,
+          tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={28}
               name="timer"
-              color={Colors.PRIMARY_BUTTON_TEXT}
+              color={
+                focused ? Colors.ACTIVE_TAB_ICON : Colors.INACTIVE_TAB_ICON
+              }
             />
           ),
         }}
@@ -54,12 +62,15 @@ const TabLayout = () => {
         options={{
           // title: "Home",
           tabBarLabel: "Workout",
-          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
-          tabBarIcon: ({ color }) => (
+          tabBarActiveTintColor: Colors.ACTIVE_TAB_ICON,
+          tabBarInactiveTintColor: Colors.INACTIVE_TAB_ICON,
+          tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={28}
               name="plus"
-              color={Colors.PRIMARY_BUTTON_TEXT}
+              color={
+                focused ? Colors.ACTIVE_TAB_ICON : Colors.INACTIVE_TAB_ICON
+              }
             />
           ),
         }}
@@ -70,12 +81,15 @@ const TabLayout = () => {
         name="exercises"
         options={{
           tabBarLabel: "Exercises",
-          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
-          tabBarIcon: ({ color }) => (
+          tabBarActiveTintColor: Colors.ACTIVE_TAB_ICON,
+          tabBarInactiveTintColor: Colors.INACTIVE_TAB_ICON,
+          tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={28}
               name="dumbbell"
-              color={Colors.PRIMARY_BUTTON_TEXT}
+              color={
+                focused ? Colors.ACTIVE_TAB_ICON : Colors.INACTIVE_TAB_ICON
+              }
             />
           ),
         }}
@@ -87,12 +101,15 @@ const TabLayout = () => {
         name="settings"
         options={{
           tabBarLabel: "Settings",
-          tabBarActiveTintColor: Colors.PRIMARY_BUTTON_TEXT,
-          tabBarIcon: ({ color }) => (
+          tabBarActiveTintColor: Colors.ACTIVE_TAB_ICON,
+          tabBarInactiveTintColor: Colors.INACTIVE_TAB_ICON,
+          tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={28}
               name="gear"
-              color={Colors.PRIMARY_BUTTON_TEXT}
+              color={
+                focused ? Colors.ACTIVE_TAB_ICON : Colors.INACTIVE_TAB_ICON
+              }
             />
           ),
         }}
