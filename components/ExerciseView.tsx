@@ -10,6 +10,7 @@ import { useWorkoutStore } from "@/store";
 
 const ExerciseView = () => {
   const { workout, setWorkout, addSet } = useWorkoutStore();
+  const setHeaders = ["SET", "PREVIOUS", "WEIGHT", "REPS"];
 
   const addSetToExercise = (exerciseId: number) => {
     // Find the exercise to ensure we're adding a set to the correct one
@@ -47,18 +48,11 @@ const ExerciseView = () => {
 
           {/* Sets Header */}
           <View style={styles.setsHeader}>
-            <View style={styles.setHeaderItem}>
-              <Text style={styles.setsHeaderText}>SET</Text>
-            </View>
-            <View style={styles.setHeaderItem}>
-              <Text style={styles.setsHeaderText}>PREVIOUS</Text>
-            </View>
-            <View style={styles.setHeaderItem}>
-              <Text style={styles.setsHeaderText}>WEIGHT</Text>
-            </View>
-            <View style={styles.setHeaderItem}>
-              <Text style={styles.setsHeaderText}>REPS</Text>
-            </View>
+            {setHeaders.map((header) => (
+              <View style={styles.setHeaderItem} key={header}>
+                <Text style={styles.setsHeaderText}>{header}</Text>
+              </View>
+            ))}
           </View>
 
           {/* Sets for each exercise */}
