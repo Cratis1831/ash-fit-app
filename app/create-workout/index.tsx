@@ -70,28 +70,32 @@ const Page = () => {
         );
       });
 
+      clearWorkout(); // This now clears the workout in the store
+      setWorkoutNameState(""); // Reset the workout name locally
+      router.dismissTo("/history");
       Alert.alert("Congratulations", "Workout completed!.");
-      cancelWorkout(); // This now clears the workout in the store
     } catch (error) {
       console.error("Error saving workout: ", error);
     }
   };
 
   const addExerciseToWorkout = () => {
-    const eId = (workout.exercises?.length || 0) + 1;
-    const exercise = {
-      id: 1,
-      name: "Bench Press",
-      bodyPart: "Chest",
-      sets: [{ exerciseId: 1, id: 1, weight: "", reps: "", completed: false }],
-    };
-    addExercise(exercise); // This now adds an exercise via the store
+    console.log("Navigating to exercises page...");
+    try {
+      if (router.canDismiss()) router.dismiss();
+      router.push(
+        `/exercises?selectionMode=${encodeURIComponent("addToWorkout")}`
+      );
+      console.log("Navigation successful");
+    } catch (error) {
+      console.error("Navigation failed", error);
+    }
   };
 
   const cancelWorkout = () => {
     clearWorkout(); // This now clears the workout in the store
     setWorkoutNameState(""); // Reset the workout name locally
-    router.dismiss();
+    router.dismissTo("/");
   };
 
   return (
@@ -100,7 +104,7 @@ const Page = () => {
         options={{
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => router.dismiss()}
+              onPress={() => router.dismissTo("/")}
               style={styles.toolbarButton}
               accessibilityLabel="Close"
             >
@@ -139,6 +143,7 @@ const Page = () => {
             <View style={{ flex: 1, justifyContent: "flex-start" }}>
               <Text style={styles.elapsedTimeText}>{elapsedTime}</Text>
               <ExerciseView />
+
               <TouchableOpacity
                 style={styles.button}
                 onPress={addExerciseToWorkout}

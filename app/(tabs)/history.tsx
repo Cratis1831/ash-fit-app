@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { workouts, exercises, sets } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
@@ -94,19 +94,18 @@ const Page = () => {
         options={{
           title: "",
           headerShadowVisible: false,
-          // change background color of tab bar and header
           headerStyle: {
             backgroundColor: Colors.BACKGROUND_COLOR,
           },
         }}
       />
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* if no data show empty state view */}
-        {Object.keys(groupedData).length === 0 && (
-          <Text>No workouts found</Text>
-        )}
-        {Object.values(groupedData).map(({ workout, sets }) => (
-          <View style={styles.itemContainer} key={workout.id}>
+      <FlatList
+        contentContainerStyle={styles.container}
+        data={Object.values(groupedData)}
+        keyExtractor={(item) => item.workout.id.toString()}
+        ListEmptyComponent={<Text>No workouts found</Text>}
+        renderItem={({ item: { workout, sets } }) => (
+          <View style={styles.itemContainer}>
             <View style={styles.workoutHeader}>
               <Text style={styles.workoutName}>{workout.name}</Text>
               <Ionicons
@@ -118,7 +117,12 @@ const Page = () => {
             </View>
             {sets.map(
               (
-                set: (typeof groupedData)[number]["sets"][number],
+                set: {
+                  setNumber: string | number | boolean;
+                  exerciseName: string | number | undefined;
+                  reps: string | number | undefined;
+                  weight: string | number | undefined;
+                },
                 index: number
               ) => (
                 <View key={`${workout.id}-${index}`}>
@@ -130,8 +134,8 @@ const Page = () => {
               )
             )}
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
     </>
   );
 };
@@ -140,8 +144,7 @@ export default Page;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "flex-start", // Center vertically
+    flexGrow: 1, // Ensure content stretches to fit available space
     padding: 16,
     backgroundColor: Colors.BACKGROUND_COLOR,
   },
