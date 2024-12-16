@@ -92,7 +92,7 @@ const ExerciseView = () => {
                 <TextInput
                   style={styles.input}
                   value={set.weight.toString()}
-                  keyboardType="numbers-and-punctuation"
+                  keyboardType="default"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "weight", text)
                   }
@@ -103,7 +103,7 @@ const ExerciseView = () => {
                 <TextInput
                   style={styles.input}
                   value={set.reps.toString()}
-                  keyboardType="numeric"
+                  keyboardType="default"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "reps", text)
                   }

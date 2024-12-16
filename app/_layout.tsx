@@ -64,6 +64,29 @@ const RootLayout = () => {
                 // sheetExpandsWhenScrolledToEdge: true,
               }}
             />
+            <Stack.Screen
+              name="create-exercise/index"
+              options={{
+                title: "",
+                presentation: "fullScreenModal",
+                sheetGrabberVisible: false,
+                headerShadowVisible: false,
+                headerShown: true,
+                // sheetExpandsWhenScrolledToEdge: true,
+              }}
+            />
+            <Stack.Screen
+              name="add-exercise/index"
+              options={{
+                title: "",
+                presentation: "formSheet",
+                sheetGrabberVisible: false,
+                headerShadowVisible: false,
+                headerShown: true,
+                gestureEnabled: false,
+                // sheetExpandsWhenScrolledToEdge: true,
+              }}
+            />
           </Stack>
         </SQLiteProvider>
       </Suspense>

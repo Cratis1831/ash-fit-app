@@ -10,20 +10,42 @@ import { exercises } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import { Colors } from "@/utils/constants";
 import { router, Stack } from "expo-router";
+import { useWorkoutStore } from "@/store";
 import { Ionicons } from "@expo/vector-icons";
 
+interface ExercisePageProps {
+  selectionMode: boolean;
+}
 const Page = () => {
+  const { workout, addExercise } = useWorkoutStore();
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
 
   const query = drizzleDb.select().from(exercises).orderBy(exercises.name);
 
   const { data } = useLiveQuery(query);
+
+  const addExerciseToWorkout = (
+    exerciseId: number,
+    exerciseName: string,
+    bodyPart: string
+  ) => {
+    const eId = (workout.exercises?.length || 0) + 1;
+    const exercise = {
+      id: eId,
+      name: exerciseName,
+      bodyPart: bodyPart,
+      sets: [{ exerciseId, id: 1, weight: "", reps: "", completed: false }],
+    };
+    addExercise(exercise); // This now adds an exercise via the store
+  };
+
   return (
     <>
       <Stack.Screen
         options={{
           title: "",
+
           headerShadowVisible: false,
           // change background color of tab bar and header
           headerStyle: {
@@ -62,8 +84,9 @@ const Page = () => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                // Navigate to exercise details
-                console.log("Navigate to exercise details for: ", item.name);
+                addExerciseToWorkout(item.id, item.name!, item.bodyPart!);
+                router.dismiss();
+                router.push("/create-workout");
               }}
             >
               <View style={styles.itemContainer}>

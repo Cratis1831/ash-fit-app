@@ -56,7 +56,6 @@ const Page = () => {
         .where(and(eq(workouts.name, workoutName), eq(workouts.isCompleted, 1)))
         .limit(1);
       const workoutId = result[0].id;
-      console.log("Workout ID: ", workoutId);
 
       workout.exercises?.map(async (exercise) => {
         await drizzleDb.insert(sets).values(
@@ -81,10 +80,10 @@ const Page = () => {
 
   const addExerciseToWorkout = () => {
     try {
-      if (router.canDismiss()) router.dismiss();
-      router.push(
-        `/exercises?selectionMode=${encodeURIComponent("addToWorkout")}`
-      );
+      // router.dismiss();
+      router.push({
+        pathname: "/add-exercise",
+      });
     } catch (error) {
       console.error("Navigation failed", error);
     }

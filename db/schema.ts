@@ -28,3 +28,9 @@ export const sets = sqliteTable("set", {
     .notNull()
     .references(() => exercises.id),
 });
+
+// BodyPart table, id, name
+export const bodyParts = sqliteTable("body_part", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  name: text(),
+});
