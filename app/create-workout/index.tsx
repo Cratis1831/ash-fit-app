@@ -16,6 +16,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
 import ExerciseView from "@/components/ExerciseView";
 import { Colors } from "@/utils/constants";
+import { useSQLiteContext } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { sets, workouts } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
 const Page = () => {
   const router = useRouter();
@@ -27,23 +31,59 @@ const Page = () => {
     workout.dateStarted?.toISOString() || null
   );
 
-  const saveWorkout = () => {
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
+
+  const saveWorkout = async () => {
     if (!workoutName.trim()) {
       Alert.alert("Error", "Workout name cannot be empty.");
       return;
     }
     setWorkout(workout); // This now updates the workout name in the store
+    try {
+      await drizzleDb.insert(workouts).values({
+        name: workoutName,
+        dateStarted:
+          workout.dateStarted?.toISOString() ?? new Date().toISOString(),
+        dateCompleted: new Date().toISOString(),
+        note: workout.note || "",
+        isCompleted: 1,
+      });
+      const result = await drizzleDb
+        .select({ id: workouts.id })
+        .from(workouts)
+        .orderBy(workouts.id)
+        .where(and(eq(workouts.name, workoutName), eq(workouts.isCompleted, 1)))
+        .limit(1);
+      const workoutId = result[0].id;
+      console.log("Workout ID: ", workoutId);
+
+      workout.exercises?.map(async (exercise) => {
+        await drizzleDb.insert(sets).values(
+          exercise.sets.map((set) => ({
+            setNumber: set.id,
+            workoutId: workoutId,
+            weight: set.weight.toString(),
+            reps: set.reps.toString(),
+            exerciseId: exercise.id,
+          }))
+        );
+      });
+
+      Alert.alert("Congratulations", "Workout completed!.");
+      cancelWorkout(); // This now clears the workout in the store
+    } catch (error) {
+      console.error("Error saving workout: ", error);
+    }
   };
 
   const addExerciseToWorkout = () => {
     const eId = (workout.exercises?.length || 0) + 1;
     const exercise = {
-      id: eId,
+      id: 1,
       name: "Bench Press",
       bodyPart: "Chest",
-      sets: [
-        { exerciseId: eId, id: 1, weight: "", reps: "", completed: false },
-      ],
+      sets: [{ exerciseId: 1, id: 1, weight: "", reps: "", completed: false }],
     };
     addExercise(exercise); // This now adds an exercise via the store
   };

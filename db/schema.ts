@@ -5,6 +5,8 @@ export const workouts = sqliteTable("workout", {
   id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
   dateStarted: text().notNull(),
+  dateCompleted: text(),
+  isCompleted: integer(),
   note: text(),
 });
 
@@ -16,6 +18,7 @@ export const exercises = sqliteTable("exercise", {
 
 export const sets = sqliteTable("set", {
   id: integer().primaryKey({ autoIncrement: true }),
+  setNumber: integer(),
   workoutId: integer("workout_id")
     .notNull()
     .references(() => workouts.id),
