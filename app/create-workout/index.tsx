@@ -80,13 +80,11 @@ const Page = () => {
   };
 
   const addExerciseToWorkout = () => {
-    console.log("Navigating to exercises page...");
     try {
       if (router.canDismiss()) router.dismiss();
       router.push(
         `/exercises?selectionMode=${encodeURIComponent("addToWorkout")}`
       );
-      console.log("Navigation successful");
     } catch (error) {
       console.error("Navigation failed", error);
     }

@@ -1,4 +1,11 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { workouts, exercises, sets } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
@@ -6,13 +13,14 @@ import { eq, asc } from "drizzle-orm";
 import { Colors } from "@/utils/constants";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useWorkoutStore } from "@/store";
+import { Ionicons } from "@expo/vector-icons";
 
 interface ExercisePageProps {
   selectionMode: boolean;
 }
 const Page = () => {
   const { selectionMode } = useLocalSearchParams();
-  const { workout, setWorkout, clearWorkout, addExercise } = useWorkoutStore();
+  const { workout, addExercise } = useWorkoutStore();
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
 
@@ -44,6 +52,30 @@ const Page = () => {
           headerStyle: {
             backgroundColor: Colors.BACKGROUND_COLOR,
           },
+          headerRight: () => (
+            <View style={{ flexDirection: "row", marginRight: 16, gap: 16 }}>
+              <TouchableOpacity
+                onPress={() => {}}
+                accessibilityLabel="Search Exercises"
+              >
+                <Ionicons
+                  name="search"
+                  size={28}
+                  color={Colors.PRIMARY_BUTTON_TEXT}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {}}
+                accessibilityLabel="Add a New Exercise"
+              >
+                <Ionicons
+                  name="add"
+                  size={28}
+                  color={Colors.PRIMARY_BUTTON_TEXT}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
         }}
       />
       <View style={styles.container}>
@@ -51,7 +83,7 @@ const Page = () => {
           data={data}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 if (selectionMode == "addToWorkout") {
                   // Add exercise to workout
@@ -75,7 +107,7 @@ const Page = () => {
                   <Text style={styles.bodyPart}>{item.bodyPart}</Text>
                 </View>
               </View>
-            </Pressable>
+            </TouchableOpacity>
           )}
         />
       </View>

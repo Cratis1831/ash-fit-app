@@ -89,7 +89,7 @@ const Page = () => {
   };
 
   return (
-    <>
+    <View style={styles.pageBackground}>
       <Stack.Screen
         options={{
           title: "",
@@ -136,17 +136,21 @@ const Page = () => {
           </View>
         )}
       />
-    </>
+    </View>
   );
 };
 
 export default Page;
 
 const styles = StyleSheet.create({
+  pageBackground: {
+    flex: 1, // Ensures it covers the entire screen
+    backgroundColor: Colors.BACKGROUND_COLOR, // Match your desired background color
+  },
   container: {
-    flexGrow: 1, // Ensure content stretches to fit available space
+    flexGrow: 1,
     padding: 16,
-    backgroundColor: Colors.BACKGROUND_COLOR,
+    backgroundColor: Colors.BACKGROUND_COLOR, // Keep this to ensure FlatList matches
   },
   itemContainer: {
     marginBottom: 20,
