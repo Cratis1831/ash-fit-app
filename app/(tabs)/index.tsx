@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import * as Crypto from "expo-crypto";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  FlatList,
+} from "react-native";
 import { Stack, useRouter } from "expo-router";
 import Animated, {
   useSharedValue,
@@ -13,6 +19,7 @@ import Animated, {
 import { useWorkoutStore } from "@/store";
 import { Colors } from "@/utils/constants";
 import Button from "@/components/Button";
+import { Divider } from "react-native-paper";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -84,6 +91,54 @@ const HomeScreen = () => {
             text="Start Workout"
           />
         )}
+        <Divider style={{ marginVertical: 20 }} />
+        <Text
+          style={{
+            color: Colors.DISABLED_BUTTON_TEXT,
+            fontSize: 20,
+            fontWeight: "bold",
+            marginBottom: 10,
+          }}
+        >
+          Workout Templates
+        </Text>
+        {/* Horizontal FlatList of a container listing some dummy Workout Templates  */}
+        <FlatList
+          horizontal
+          data={[1, 2, 3, 4, 5]}
+          keyExtractor={(item) => item.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                width: 150,
+                height: 150,
+                backgroundColor: Colors.PRIMARY_BUTTON_TEXT,
+                borderColor: Colors.PRIMARY_BUTTON_TEXT,
+                borderWidth: 1,
+                marginHorizontal: 5,
+                borderRadius: 10,
+                marginVertical: 10,
+                justifyContent: "center",
+              }}
+            >
+              {/* Put a random fitness ionicon in the center */}
+              <Text style={{ textAlign: "center", fontSize: 80 }}>
+                {/* random fitness icon based off of modulus  */}
+                {item % 2 === 0 ? "🏋️" : "🚴"}
+              </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: Colors.COLORED_BUTTON_TEXT,
+                }}
+              >
+                Template {item}
+              </Text>
+            </View>
+          )}
+        />
       </View>
     </>
   );
