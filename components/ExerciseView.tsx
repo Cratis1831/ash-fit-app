@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import { useWorkoutStore } from "@/store";
-import { Colors } from "@/utils/constants";
+import { Colors, WeightUnits } from "@/utils/constants";
 import { Ionicons } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
@@ -119,8 +119,16 @@ const ExerciseView = () => {
               {/* Weight input */}
               <View style={styles.setItem}>
                 <TextInput
-                  style={styles.input}
+                  style={[
+                    styles.input,
+                    set.completed && {
+                      backgroundColor: Colors.DISABLED_BUTTON_BACKGROUND,
+                      color: Colors.DISABLED_BUTTON_TEXT,
+                    },
+                  ]}
                   value={set.weight.toString()}
+                  editable={!set.completed}
+                  placeholder={WeightUnits.LBS}
                   keyboardType="default"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "weight", text)
@@ -130,8 +138,15 @@ const ExerciseView = () => {
               {/* Reps input */}
               <View style={styles.setItem}>
                 <TextInput
-                  style={styles.input}
+                  style={[
+                    styles.input,
+                    set.completed && {
+                      backgroundColor: Colors.DISABLED_BUTTON_BACKGROUND,
+                      color: Colors.DISABLED_BUTTON_TEXT,
+                    },
+                  ]}
                   value={set.reps.toString()}
+                  editable={!set.completed}
                   keyboardType="default"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "reps", text)

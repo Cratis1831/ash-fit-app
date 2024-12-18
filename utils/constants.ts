@@ -1,3 +1,8 @@
+export enum WeightUnits {
+  KGS = "kg",
+  LBS = "lbs",
+}
+
 export enum Colors {
   PRIMARY_BUTTON_TEXT = "#ff5656", // Hex for blue
   DESTRUCTIVE_BUTTON_TEXT = "#FF0000", // Hex for red
@@ -7,6 +12,8 @@ export enum Colors {
   BACKGROUND_COLOR = "#FFFFFF", // Hex for white
   INACTIVE_TAB_ICON = "#adb5bd", // Hex for light gray
   ACTIVE_TAB_ICON = PRIMARY_BUTTON_TEXT, // Hex for blue
+  DISABLED_BUTTON_TEXT = "#666666", // Hex for dark gray
+  DISABLED_BUTTON_BACKGROUND = "#E0E0E0", // Hex for lighter gray
 }
 
 export const ColorScheme = {

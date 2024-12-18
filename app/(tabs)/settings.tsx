@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
 import { Colors } from "@/utils/constants";
 import { Stack } from "expo-router";
+import { RadioButton } from "react-native-paper";
 
 const SettingsScreen = () => {
   const [isDarkMode, setDarkMode] = useState(false);
   const [isNotificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isSoundEnabled, setSoundEnabled] = useState(true);
+  const [weightUnits, setWeightUnits] = useState("lbs");
 
   const appName = "AshFit";
   const appVersion = "1.0.0";
@@ -19,7 +21,6 @@ const SettingsScreen = () => {
         options={{
           title: "",
           headerShadowVisible: false,
-          // change background color of tab bar and header
           headerStyle: {
             backgroundColor: Colors.BACKGROUND_COLOR,
           },
@@ -104,6 +105,52 @@ const SettingsScreen = () => {
         />
       </View>
 
+      {/* Weight Units Selection */}
+      <View style={styles.settingRow}>
+        <View style={styles.settingText}>
+          <Text style={[styles.title, { color: Colors.ACTIVE_TAB_ICON }]}>
+            Weight Units
+          </Text>
+          <Text
+            style={[styles.description, { color: Colors.INACTIVE_TAB_ICON }]}
+          >
+            Choose your preferred unit for weight measurement.
+          </Text>
+        </View>
+
+        <RadioButton.Group
+          onValueChange={(value) => setWeightUnits(value)}
+          value={weightUnits}
+        >
+          <View style={styles.radioRow}>
+            <View>
+              <Text
+                style={[styles.radioLabel, { color: Colors.ACTIVE_TAB_ICON }]}
+              >
+                KGS
+              </Text>
+              <RadioButton
+                value="kgs"
+                color={Colors.ACTIVE_TAB_ICON}
+                uncheckedColor={Colors.INACTIVE_TAB_ICON}
+              />
+            </View>
+            <View>
+              <Text
+                style={[styles.radioLabel, { color: Colors.ACTIVE_TAB_ICON }]}
+              >
+                LBS
+              </Text>
+              <RadioButton
+                value="lbs"
+                color={Colors.ACTIVE_TAB_ICON}
+                uncheckedColor={Colors.INACTIVE_TAB_ICON}
+              />
+            </View>
+          </View>
+        </RadioButton.Group>
+      </View>
+
       {/* App Info at the Bottom */}
       <View style={styles.footer}>
         <Text style={[styles.footerText, { color: Colors.INACTIVE_TAB_ICON }]}>
@@ -130,7 +177,7 @@ const styles = StyleSheet.create({
   },
   settingText: {
     flex: 1,
-    marginRight: 16, // Ensure space between text and the switch
+    marginRight: 16,
   },
   title: {
     fontSize: 18,
@@ -143,11 +190,19 @@ const styles = StyleSheet.create({
   footer: {
     justifyContent: "center",
     alignItems: "center",
-
     padding: 16,
   },
   footerText: {
     fontSize: 16,
+  },
+  radioRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  radioLabel: {
+    fontSize: 16,
+    // marginLeft: 8,
   },
 });
 
