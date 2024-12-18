@@ -49,6 +49,7 @@ const ExerciseView = () => {
                   ? {
                       ...setItem,
                       // completed: !setItem.completed,
+
                       completed: isChecked,
                     }
                   : setItem
@@ -141,10 +142,15 @@ const ExerciseView = () => {
                 <BouncyCheckbox
                   size={25}
                   isChecked={set.completed}
-                  fillColor="red"
-                  unFillColor="#FFFFFF"
+                  fillColor={
+                    set.reps === "" || set.weight === ""
+                      ? Colors.INACTIVE_TAB_ICON
+                      : Colors.PRIMARY_BUTTON_TEXT
+                  }
+                  unFillColor={Colors.BACKGROUND_COLOR}
                   iconStyle={{ borderColor: "red" }}
                   innerIconStyle={{ borderWidth: 2 }}
+                  disabled={set.reps === "" || set.weight === ""}
                   onPress={(isChecked: boolean) => {
                     set.completed = isChecked;
                     handleToggleSet(exercise.id, set.id, isChecked);
