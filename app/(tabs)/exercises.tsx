@@ -1,7 +1,9 @@
 import {
   FlatList,
+  Keyboard,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,6 +13,12 @@ import { useSQLiteContext } from "expo-sqlite";
 import { Colors } from "@/utils/constants";
 import { router, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { useState } from "react";
 
 const Page = () => {
   const db = useSQLiteContext();
@@ -19,22 +27,57 @@ const Page = () => {
   const query = drizzleDb.select().from(exercises).orderBy(exercises.name);
 
   const { data } = useLiveQuery(query);
+
+  const [isVisible, setIsVisible] = useState(false); // Track visibility
+  const translateX = useSharedValue(-50); // Start hidden above view
+
+  // Toggle visibility
+  const toggleSearchBar = () => {
+    setIsVisible(!isVisible);
+    translateX.value = isVisible ? 50 : 0; // Slide down/up
+  };
+
+  // Animated style for the TextInput
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      // transform: [
+      //   { translateX: withTiming(translateX.value, { duration: 300 }) },
+      // ],
+      opacity: withTiming(isVisible ? 1 : 0, { duration: 300 }),
+      width: withTiming(isVisible ? 250 : 0, { duration: 300 }),
+    };
+  });
   return (
     <>
       <Stack.Screen
         options={{
           title: "",
           headerShadowVisible: false,
+
           // change background color of tab bar and header
           headerStyle: {
             backgroundColor: Colors.BACKGROUND_COLOR,
           },
+          headerTitle: () => (
+            <View
+              style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+            >
+              <Animated.View style={[animatedStyle, styles.inputContainer]}>
+                <TextInput
+                  placeholder="Search Exercises"
+                  placeholderTextColor="#999"
+                  style={styles.textInput}
+                  onBlur={toggleSearchBar}
+                />
+              </Animated.View>
+            </View>
+          ),
+          headerLeft: () => null,
           headerRight: () => (
-            <View style={{ flexDirection: "row", marginRight: 16, gap: 16 }}>
-              <TouchableOpacity
-                onPress={() => {}}
-                accessibilityLabel="Search Exercises"
-              >
+            <View
+              style={{ flexDirection: "row", marginRight: 16, flex: 0, gap: 4 }}
+            >
+              <TouchableOpacity onPress={toggleSearchBar}>
                 <Ionicons
                   name="search"
                   size={28}
@@ -123,5 +166,18 @@ const styles = StyleSheet.create({
   bodyPart: {
     fontSize: 14,
     color: Colors.COLORED_BUTTON_BACKGROUND,
+  },
+  inputContainer: {
+    flexGrow: 1, // Allow the input to take up remaining space
+    flexShrink: 1, // Shrink when needed
+    marginLeft: -30,
+    marginRight: 10,
+  },
+  textInput: {
+    height: 40,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    fontSize: 16,
   },
 });

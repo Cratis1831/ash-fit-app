@@ -11,6 +11,7 @@ import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { ActivityIndicator } from "react-native";
 import { addDummyData } from "@/utils/dummyData";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // const db = SQLite.openDatabaseSync("db");
 
@@ -40,7 +41,7 @@ const RootLayout = () => {
     return null;
   }
   return (
-    <>
+    <GestureHandlerRootView>
       <Suspense fallback={<ActivityIndicator />}>
         <SQLiteProvider
           databaseName="workouts.db"
@@ -90,7 +91,7 @@ const RootLayout = () => {
           </Stack>
         </SQLiteProvider>
       </Suspense>
-    </>
+    </GestureHandlerRootView>
   );
 };
 

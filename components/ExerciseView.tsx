@@ -7,10 +7,12 @@ import {
 } from "react-native";
 import { useWorkoutStore } from "@/store";
 import { Colors } from "@/utils/constants";
+import { Ionicons } from "@expo/vector-icons";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const ExerciseView = () => {
   const { workout, setWorkout, addSet } = useWorkoutStore();
-  const setHeaders = ["SET", "PREVIOUS", "WEIGHT", "REPS"];
+  const setHeaders = ["SET", "PREVIOUS", "WEIGHT", "REPS", ""];
 
   const addSetToExercise = (exerciseId: number) => {
     const exercise = workout.exercises.find((e) => e.id === exerciseId);
@@ -29,6 +31,32 @@ const ExerciseView = () => {
     };
 
     addSet(newSet, exerciseId);
+  };
+
+  const handleToggleSet = (
+    exerciseId: number,
+    setId: number,
+    isChecked: boolean
+  ) => {
+    setWorkout({
+      ...workout,
+      exercises: workout.exercises.map((exerciseItem) =>
+        exerciseItem.id === exerciseId
+          ? {
+              ...exerciseItem,
+              sets: exerciseItem.sets.map((setItem) =>
+                setItem.id === setId
+                  ? {
+                      ...setItem,
+                      // completed: !setItem.completed,
+                      completed: isChecked,
+                    }
+                  : setItem
+              ),
+            }
+          : exerciseItem
+      ),
+    });
   };
 
   const handleSetChange = (
@@ -109,6 +137,20 @@ const ExerciseView = () => {
                   }
                 />
               </View>
+              <View style={styles.setItem}>
+                <BouncyCheckbox
+                  size={25}
+                  isChecked={set.completed}
+                  fillColor="red"
+                  unFillColor="#FFFFFF"
+                  iconStyle={{ borderColor: "red" }}
+                  innerIconStyle={{ borderWidth: 2 }}
+                  onPress={(isChecked: boolean) => {
+                    set.completed = isChecked;
+                    handleToggleSet(exercise.id, set.id, isChecked);
+                  }}
+                />
+              </View>
             </View>
           ))}
 
@@ -129,7 +171,7 @@ const styles = StyleSheet.create({
     // padding: 16,
   },
   exerciseContainer: {
-    gap: 5,
+    // gap: 20,
     marginBottom: 20,
     // backgroundColor: "#f9f9f9",
   },
@@ -139,7 +181,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   exerciseName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     color: Colors.PRIMARY_BUTTON_TEXT,
   },
@@ -147,6 +189,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
+    gap: 10,
   },
   setHeaderItem: {
     width: 75,
@@ -160,12 +203,17 @@ const styles = StyleSheet.create({
   setContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    alignItems: "center", // Align items vertically for consistent layout
+    marginBottom: 12,
+    paddingVertical: 5, // Add some padding for touch targets
+    gap: 10,
+    borderColor: Colors.INPUT_BORDER_COLOR,
   },
   setItem: {
     width: 75,
     justifyContent: "center",
     alignItems: "center",
+    // paddingHorizontal: 8,
   },
   setText: {
     textAlign: "center",
@@ -176,7 +224,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.INPUT_BORDER_COLOR,
     borderRadius: 4,
     padding: 8,
-    width: 75,
+    width: "90%",
   },
   button: {
     flexDirection: "row",
