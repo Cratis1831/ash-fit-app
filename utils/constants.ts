@@ -4,7 +4,7 @@ export enum WeightUnits {
 }
 
 export enum Colors {
-  PRIMARY_BUTTON_TEXT = "#ff5656", // Hex for blue
+  PRIMARY_BUTTON_TEXT = "#5680ff", // Hex for #ff5656
   DESTRUCTIVE_BUTTON_TEXT = "#FF0000", // Hex for red
   INPUT_BORDER_COLOR = "#CCCCCC", // Hex for light gray
   COLORED_BUTTON_TEXT = "#FFFFFF", // Hex for white

@@ -7,13 +7,19 @@ interface ButtonProps {
   text: string;
 }
 
-const Button = ({ onPress, accessibilityLabel, text }: ButtonProps) => {
+const Button = ({
+  onPress,
+  accessibilityLabel,
+  text,
+  ...props
+}: ButtonProps) => {
   return (
     <TouchableOpacity
       style={[styles.button, styles.startButton]}
       onPress={onPress}
       accessibilityLabel={accessibilityLabel}
       activeOpacity={0.8}
+      {...props}
     >
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>

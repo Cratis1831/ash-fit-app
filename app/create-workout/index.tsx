@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 10,
+    marginVertical: 8,
+    padding: 8,
   },
   buttonText: {
     color: Colors.PRIMARY_BUTTON_TEXT,
@@ -192,9 +193,11 @@ const styles = StyleSheet.create({
   },
   toolbarButton: {
     marginHorizontal: 8,
+    padding: 8,
   },
   saveButton: {
     marginHorizontal: 8,
+    padding: 8,
   },
   saveText: {
     fontSize: 16,

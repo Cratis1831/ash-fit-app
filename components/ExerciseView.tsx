@@ -129,7 +129,7 @@ const ExerciseView = () => {
                   value={set.weight.toString()}
                   editable={!set.completed}
                   placeholder={WeightUnits.LBS}
-                  keyboardType="default"
+                  keyboardType="numeric"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "weight", text)
                   }
@@ -147,7 +147,7 @@ const ExerciseView = () => {
                   ]}
                   value={set.reps.toString()}
                   editable={!set.completed}
-                  keyboardType="default"
+                  keyboardType="numeric"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "reps", text)
                   }
