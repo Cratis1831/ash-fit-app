@@ -83,12 +83,14 @@ const Page = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter exercise name..."
+              placeholderTextColor={Colors.INACTIVE_TAB_ICON}
               value={exerciseName}
               onChangeText={setExerciseName}
               keyboardType="default"
               accessibilityLabel="Exercise Name Input"
             />
             <Picker
+              placeholder="Select Body Part"
               selectedValue={bodyPartName}
               onValueChange={(itemValue, itemIndex) =>
                 setBodyPartName(itemValue)
@@ -100,6 +102,7 @@ const Page = () => {
                     label={item.name!}
                     value={item.name}
                     key={item.id}
+                    color={Colors.PRIMARY_BUTTON_TEXT}
                   />
                 );
               })}
@@ -119,7 +122,7 @@ export default Page;
 
 const styles = StyleSheet.create({
   flexContainer: {
-    // flex: 1,
+    flex: 1,
   },
   scrollViewContent: {
     flexGrow: 1,

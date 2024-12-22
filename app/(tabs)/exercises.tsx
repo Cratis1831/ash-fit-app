@@ -65,7 +65,7 @@ const Page = () => {
               <Animated.View style={[animatedStyle, styles.inputContainer]}>
                 <TextInput
                   placeholder="Search Exercises"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={Colors.INACTIVE_TAB_ICON}
                   style={styles.textInput}
                   onBlur={toggleSearchBar}
                 />

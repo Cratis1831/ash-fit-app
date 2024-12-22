@@ -129,6 +129,7 @@ const ExerciseView = () => {
                   value={set.weight.toString()}
                   editable={!set.completed}
                   placeholder={WeightUnits.LBS}
+                  placeholderTextColor={Colors.INACTIVE_TAB_ICON}
                   keyboardType="numeric"
                   onChangeText={(text) =>
                     handleSetChange(exercise.id, set.id, "weight", text)

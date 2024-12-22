@@ -132,6 +132,7 @@ const Page = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter workout name..."
+              placeholderTextColor={Colors.INACTIVE_TAB_ICON}
               value={workoutName}
               onChangeText={(text) => setWorkoutNameState(text)} // Manage locally
               keyboardType="default"
