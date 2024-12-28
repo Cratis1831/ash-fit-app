@@ -74,25 +74,15 @@ const Page = () => {
           ),
           headerLeft: () => null,
           headerRight: () => (
-            <View
-              style={{ flexDirection: "row", marginRight: 16, flex: 0, gap: 4 }}
-            >
+            <View style={{ flexDirection: "row", marginRight: 16, gap: 16 }}>
               <TouchableOpacity onPress={toggleSearchBar}>
-                <Ionicons
-                  name="search"
-                  size={28}
-                  color={Colors.PRIMARY_BUTTON_TEXT}
-                />
+                <Ionicons name="search" size={28} color={Colors.PRIMARY} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => router.push("/create-exercise")}
                 accessibilityLabel="Add a New Exercise"
               >
-                <Ionicons
-                  name="add"
-                  size={28}
-                  color={Colors.PRIMARY_BUTTON_TEXT}
-                />
+                <Ionicons name="add" size={28} color={Colors.PRIMARY} />
               </TouchableOpacity>
             </View>
           ),
@@ -138,15 +128,16 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    // borderBottomWidth: 1,
-    // borderBottomColor: Colors.INPUT_BORDER_COLOR,
+    paddingLeft: 16,
+    marginVertical: 8,
+    backgroundColor: Colors.BACKGROUND_COLOR,
+    borderRadius: 8,
   },
   avatarCircle: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: Colors.PRIMARY_BUTTON_TEXT,
+    backgroundColor: Colors.PRIMARY,
     justifyContent: "center",
     alignItems: "center",
   },

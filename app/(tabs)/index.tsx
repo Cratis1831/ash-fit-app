@@ -107,8 +107,8 @@ const HomeScreen = () => {
               style={{
                 width: 150,
                 height: 150,
-                backgroundColor: Colors.PRIMARY_BUTTON_TEXT,
-                borderColor: Colors.PRIMARY_BUTTON_TEXT,
+                backgroundColor: Colors.PRIMARY,
+                borderColor: Colors.PRIMARY,
                 borderWidth: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,

@@ -4,14 +4,14 @@ export enum WeightUnits {
 }
 
 export enum Colors {
-  PRIMARY_BUTTON_TEXT = "#5680ff", // Hex for #ff5656
+  PRIMARY = "#000000", // Hex for #ff5656
   DESTRUCTIVE_BUTTON_TEXT = "#FF0000", // Hex for red
   INPUT_BORDER_COLOR = "#CCCCCC", // Hex for light gray
   COLORED_BUTTON_TEXT = "#FFFFFF", // Hex for white
-  COLORED_BUTTON_BACKGROUND = PRIMARY_BUTTON_TEXT, // Hex for red
+  COLORED_BUTTON_BACKGROUND = PRIMARY, // Hex for red
   BACKGROUND_COLOR = "#FFFFFF", // Hex for white
   INACTIVE_TAB_ICON = "#adb5bd", // Hex for light gray
-  ACTIVE_TAB_ICON = PRIMARY_BUTTON_TEXT, // Hex for blue
+  ACTIVE_TAB_ICON = PRIMARY, // Hex for blue
   DISABLED_BUTTON_TEXT = "#666666", // Hex for dark gray
   DISABLED_BUTTON_BACKGROUND = "#E0E0E0", // Hex for lighter gray
 }

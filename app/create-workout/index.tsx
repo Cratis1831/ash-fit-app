@@ -105,11 +105,7 @@ const Page = () => {
               style={styles.toolbarButton}
               accessibilityLabel="Close"
             >
-              <Ionicons
-                name="chevron-down"
-                size={24}
-                color={Colors.PRIMARY_BUTTON_TEXT}
-              />
+              <Ionicons name="chevron-down" size={24} color={Colors.PRIMARY} />
             </TouchableOpacity>
           ),
           headerRight: () => (
@@ -185,7 +181,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   buttonText: {
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
     fontWeight: "bold",
   },
   destructiveButtonText: {
@@ -203,7 +199,7 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
   },
   elapsedTimeText: {
     marginBottom: 10,

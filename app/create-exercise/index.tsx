@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -10,18 +10,21 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/utils/constants";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { bodyParts, exercises } from "@/db/schema";
 import { Picker } from "@react-native-picker/picker";
+import { useBodyPartStore } from "@/store";
 
 const Page = () => {
   const router = useRouter();
+  const { selectedBodyPart } = useLocalSearchParams(); // Get the query parameter
   const [exerciseName, setExerciseName] = useState("");
-  const [bodyPartName, setBodyPartName] = useState("");
+  const { bodyPart, setBodyPart } = useBodyPartStore();
 
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
@@ -31,20 +34,20 @@ const Page = () => {
   const { data } = useLiveQuery(query);
 
   const saveExercise = async () => {
-    if (!exerciseName.trim()) {
-      Alert.alert("Error", "Exercise name cannot be empty.");
+    if (!exerciseName.trim() || !bodyPart) {
+      Alert.alert("Error", "Exercise name and body part are both required.");
       return;
     }
 
     try {
       await drizzleDb.insert(exercises).values({
         name: exerciseName,
-        bodyPart: bodyPartName,
+        bodyPart: bodyPart,
       });
 
       // Reset input fields
       setExerciseName("");
-      setBodyPartName("");
+      setBodyPart("");
 
       Alert.alert("Exercise Added", "Completed!");
       router.dismiss();
@@ -64,11 +67,7 @@ const Page = () => {
               style={styles.toolbarButton}
               accessibilityLabel="Close"
             >
-              <Ionicons
-                name="chevron-down"
-                size={24}
-                color={Colors.PRIMARY_BUTTON_TEXT}
-              />
+              <Ionicons name="chevron-down" size={24} color={Colors.PRIMARY} />
             </TouchableOpacity>
           ),
         }}
@@ -89,24 +88,16 @@ const Page = () => {
               keyboardType="default"
               accessibilityLabel="Exercise Name Input"
             />
-            <Picker
-              placeholder="Select Body Part"
-              selectedValue={bodyPartName}
-              onValueChange={(itemValue, itemIndex) =>
-                setBodyPartName(itemValue)
-              }
+            <TouchableOpacity
+              style={styles.selectButton}
+              onPress={() => router.push("/create-exercise/select-bodypart")}
             >
-              {data.map((item) => {
-                return (
-                  <Picker.Item
-                    label={item.name!}
-                    value={item.name}
-                    key={item.id}
-                    color={Colors.PRIMARY_BUTTON_TEXT}
-                  />
-                );
-              })}
-            </Picker>
+              <Text
+                style={bodyPart ? styles.placeholderText : styles.selectedText}
+              >
+                {bodyPart || "Select a bodypart"}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={saveExercise}>
               <Text style={styles.buttonText}>Add Exercise</Text>
@@ -131,6 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+    gap: 20,
   },
   input: {
     borderWidth: 1,
@@ -161,6 +153,28 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
+  },
+
+  selectButton: {
+    backgroundColor: "#fff", // White background for the button
+    borderColor: "#ccc", // Light gray border for clarity
+    borderWidth: 1,
+    borderRadius: 8, // Rounded corners
+    paddingVertical: 12, // Padding for height
+    paddingHorizontal: 16, // Padding for content spacing
+    marginVertical: 8, // Spacing between other components
+    alignItems: "center", // Center the text horizontally
+    justifyContent: "center", // Center the text vertically
+  },
+  placeholderText: {
+    color: "#888", // Light gray to indicate placeholder
+    fontSize: 16, // Medium font size
+    fontStyle: "italic", // Italic style to differentiate placeholder
+  },
+  selectedText: {
+    color: "#000", // Black for selected value
+    fontSize: 16, // Consistent font size
+    fontWeight: "bold", // Bold text to emphasize the selection
   },
 });

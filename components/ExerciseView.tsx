@@ -161,7 +161,7 @@ const ExerciseView = () => {
                   fillColor={
                     set.reps === "" || set.weight === ""
                       ? Colors.INACTIVE_TAB_ICON
-                      : Colors.PRIMARY_BUTTON_TEXT
+                      : Colors.PRIMARY
                   }
                   unFillColor={Colors.BACKGROUND_COLOR}
                   iconStyle={{ borderColor: "red" }}
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   exerciseName: {
     fontSize: 18,
     fontWeight: "bold",
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
   },
   setsHeader: {
     flexDirection: "row",
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
     fontWeight: "bold",
   },
   destructiveButtonText: {

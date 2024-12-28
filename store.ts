@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import { Exercise, Workout, Set } from "./types";
 
+interface BodyPartStore {
+  bodyPart: string;
+  setBodyPart: (bodyPart: string) => void;
+}
+
+export const useBodyPartStore = create<BodyPartStore>((set) => ({
+  bodyPart: "",
+  setBodyPart: (bodyPart: string) => set({ bodyPart }),
+}));
 interface WorkoutStore {
   workout: Workout;
   setWorkout: (workout: Workout) => void;

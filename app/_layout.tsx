@@ -77,6 +77,17 @@ const RootLayout = () => {
               }}
             />
             <Stack.Screen
+              name="create-exercise/select-bodypart"
+              options={{
+                title: "",
+                presentation: "fullScreenModal",
+                sheetGrabberVisible: false,
+                headerShadowVisible: false,
+                headerShown: true,
+                // sheetExpandsWhenScrolledToEdge: true,
+              }}
+            />
+            <Stack.Screen
               name="add-exercise/index"
               options={{
                 title: "",

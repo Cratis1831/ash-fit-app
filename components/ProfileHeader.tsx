@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.DESTRUCTIVE_BUTTON_TEXT,
   },
   profileName: {
-    color: Colors.PRIMARY_BUTTON_TEXT,
+    color: Colors.PRIMARY,
     fontSize: 20,
     fontWeight: "bold",
   },
