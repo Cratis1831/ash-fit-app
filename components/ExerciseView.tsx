@@ -109,7 +109,18 @@ const ExerciseView = () => {
           </View>
           {/* Loop through the sets of the each exercises */}
           {exercise.sets?.map((set) => (
-            <View style={styles.setContainer} key={set.id}>
+            <View
+              style={[
+                styles.setContainer,
+                set.completed && {
+                  opacity: 0.5,
+                  backgroundColor: Colors.DISABLED_BUTTON_BACKGROUND,
+                  borderRadius: 8,
+                  marginRight: -10,
+                },
+              ]}
+              key={set.id}
+            >
               <View style={styles.setItem}>
                 <Text style={styles.setText}>{set.id}</Text>
               </View>
@@ -137,7 +148,7 @@ const ExerciseView = () => {
                 />
               </View>
               {/* Reps input */}
-              <View style={styles.setItem}>
+              <View style={[styles.setItem]}>
                 <TextInput
                   style={[
                     styles.input,
@@ -226,7 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center", // Align items vertically for consistent layout
-    marginBottom: 12,
+    // marginBottom: 8,
     paddingVertical: 5, // Add some padding for touch targets
     gap: 10,
     borderColor: Colors.INPUT_BORDER_COLOR,
