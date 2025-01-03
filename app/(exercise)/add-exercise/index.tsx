@@ -30,9 +30,9 @@ const Page = () => {
     exerciseName: string,
     bodyPart: string
   ) => {
-    const eId = (workout.exercises?.length || 0) + 1;
+    // const eId = (workout.exercises?.length || 0) + 1;
     const exercise = {
-      id: eId,
+      id: exerciseId,
       name: exerciseName,
       bodyPart: bodyPart,
       sets: [{ exerciseId, id: 1, weight: "", reps: "", completed: false }],

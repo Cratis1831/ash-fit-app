@@ -81,10 +81,7 @@ const Page = () => {
 
   const addExerciseToWorkout = () => {
     try {
-      // router.dismiss();
-      router.push({
-        pathname: "/add-exercise",
-      });
+      router.push("/add-exercise");
     } catch (error) {
       console.error("Navigation failed", error);
     }

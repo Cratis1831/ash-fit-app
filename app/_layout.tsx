@@ -55,7 +55,7 @@ const RootLayout = () => {
           >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
-              name="create-workout/index"
+              name="(workout)/create-workout/index"
               options={{
                 title: "",
                 presentation: "fullScreenModal",
@@ -66,7 +66,7 @@ const RootLayout = () => {
               }}
             />
             <Stack.Screen
-              name="create-exercise/index"
+              name="(exercise)/create-exercise/index"
               options={{
                 title: "",
                 presentation: "fullScreenModal",
@@ -77,7 +77,7 @@ const RootLayout = () => {
               }}
             />
             <Stack.Screen
-              name="create-exercise/select-bodypart"
+              name="(exercise)/create-exercise/select-bodypart"
               options={{
                 title: "",
                 presentation: "fullScreenModal",
@@ -88,7 +88,7 @@ const RootLayout = () => {
               }}
             />
             <Stack.Screen
-              name="add-exercise/index"
+              name="(exercise)/add-exercise/index"
               options={{
                 title: "",
                 presentation: "formSheet",
