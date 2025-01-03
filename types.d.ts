@@ -18,4 +18,5 @@ export interface Set {
   weight: number | string;
   reps: number | string;
   completed: boolean;
+  exerciseId: number;
 }

@@ -26,30 +26,31 @@ const HomeScreen = () => {
   const router = useRouter();
   const { workout, setWorkout } = useWorkoutStore();
 
-  const pulseOpacity = useSharedValue(1);
+  // const pulseOpacity = useSharedValue(1);
 
-  useEffect(() => {
-    if (workout.id !== null) {
-      pulseOpacity.value = withRepeat(
-        withTiming(0.5, {
-          duration: 1000,
-          easing: Easing.inOut(Easing.ease),
-        }),
-        -1,
-        true // reverse animation
-      );
-    } else {
-      pulseOpacity.value = 1; // Reset opacity when no workout
-    }
-  }, [workout]);
+  // useEffect(() => {
+  //   if (workout.id !== null) {
+  //     pulseOpacity.value = withRepeat(
+  //       withTiming(0.5, {
+  //         duration: 1000,
+  //         easing: Easing.inOut(Easing.ease),
+  //       }),
+  //       -1,
+  //       true // reverse animation
+  //     );
+  //   } else {
+  //     pulseOpacity.value = 1; // Reset opacity when no workout
+  //   }
+  // }, [workout]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: pulseOpacity.value,
-    };
-  });
+  // const animatedStyle = useAnimatedStyle(() => {
+  //   return {
+  //     opacity: pulseOpacity.value,
+  //   };
+  // });
 
   const handleGoToWorkout = () => {
+    router.push("/create-workout");
     setWorkout({
       name: "",
       id: Crypto.randomUUID(),
@@ -57,7 +58,6 @@ const HomeScreen = () => {
       note: null,
       exercises: [],
     });
-    router.push("/create-workout");
   };
 
   const elapsedTime = useElapsedTime(
@@ -99,9 +99,10 @@ const HomeScreen = () => {
         </Text>
         {/* Horizontal FlatList of a container listing some dummy Workout Templates  */}
         <FlatList
-          horizontal
-          data={[1, 2, 3, 4, 5]}
+          data={[1, 2, 3, 4]}
           keyExtractor={(item) => item.toString()}
+          numColumns={2}
+          contentContainerStyle={{ alignItems: "center" }}
           renderItem={({ item }) => (
             <View
               style={{

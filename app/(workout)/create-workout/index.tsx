@@ -19,7 +19,7 @@ import { Colors } from "@/utils/constants";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { sets, workouts } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 
 const Page = () => {
   const router = useRouter();
@@ -50,11 +50,12 @@ const Page = () => {
         isCompleted: 1,
       });
       const result = await drizzleDb
-        .select({ id: workouts.id })
+        .select()
         .from(workouts)
-        .orderBy(workouts.id)
+        .orderBy(desc(workouts.dateStarted))
         .where(and(eq(workouts.name, workoutName), eq(workouts.isCompleted, 1)))
         .limit(1);
+
       const workoutId = result[0].id;
 
       workout.exercises?.map(async (exercise) => {
@@ -64,7 +65,7 @@ const Page = () => {
             workoutId: workoutId,
             weight: set.weight.toString(),
             reps: set.reps.toString(),
-            exerciseId: exercise.id,
+            exerciseId: set.exerciseId,
           }))
         );
       });
@@ -123,7 +124,7 @@ const Page = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             <TextInput
               style={styles.input}
@@ -136,6 +137,8 @@ const Page = () => {
 
             <View style={{ flex: 1, justifyContent: "flex-start" }}>
               <Text style={styles.elapsedTimeText}>{elapsedTime}</Text>
+
+              {/* This is where the sets are added */}
               <ExerciseView />
 
               <TouchableOpacity

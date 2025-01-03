@@ -28,6 +28,7 @@ const ExerciseView = () => {
       weight: "",
       reps: "",
       completed: false,
+      exerciseId: exercise.id,
     };
 
     addSet(newSet, exerciseId);
@@ -93,6 +94,7 @@ const ExerciseView = () => {
   return (
     <View style={styles.container}>
       {/* Loop through the exercises for current workout */}
+
       {workout.exercises?.map((exercise) => (
         <View style={styles.exerciseContainer} key={exercise.id}>
           <View style={styles.exerciseHeader}>

@@ -94,10 +94,7 @@ const Page = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => {
-                // Navigate to exercise details
-                console.log("Navigate to exercise details for: ", item.name);
-              }}
+              onPress={() => router.push(`/exercise-detail/${item.id}`)}
             >
               <View style={styles.itemContainer}>
                 <View style={styles.avatarCircle}>

@@ -99,6 +99,15 @@ const RootLayout = () => {
                 // sheetExpandsWhenScrolledToEdge: true,
               }}
             />
+            <Stack.Screen
+              name="(exercise)/exercise-detail/[id]"
+              options={{
+                title: "",
+                headerShadowVisible: false,
+                headerShown: true,
+                headerBackTitle: "Back",
+              }}
+            />
           </Stack>
         </SQLiteProvider>
       </Suspense>

@@ -3,7 +3,6 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,8 +16,8 @@ import { Colors } from "@/utils/constants";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { bodyParts, exercises } from "@/db/schema";
-import { Picker } from "@react-native-picker/picker";
 import { useBodyPartStore } from "@/store";
+import { CustomScrollView } from "@/components/ui/CustomScrollView";
 
 const Page = () => {
   const router = useRouter();
@@ -77,7 +76,7 @@ const Page = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.flexContainer}
       >
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <CustomScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <TextInput
               style={styles.input}
@@ -103,7 +102,7 @@ const Page = () => {
               <Text style={styles.buttonText}>Add Exercise</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        </CustomScrollView>
       </KeyboardAvoidingView>
     </>
   );
