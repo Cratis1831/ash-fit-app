@@ -21,6 +21,7 @@ import { Colors } from "@/utils/constants";
 import Button from "@/components/Button";
 import { Divider } from "react-native-paper";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
+import PopUpButton from "@/components/ui/PopUpButton";
 
 const HomeScreen = () => {
   const router = useRouter();

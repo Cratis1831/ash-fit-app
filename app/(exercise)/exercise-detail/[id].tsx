@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ActivityIndicator,
+} from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { exercises } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import CustomButton from "@/components/ui/CustomButton";
+import { useBodyPartStore } from "@/store";
 
 const ExerciseDetail = () => {
   const { id } = useLocalSearchParams();
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
-  const [name, setName] = useState("");
+  const [exerciseName, setExerciseName] = useState("");
   const [debouncedName, setDebouncedName] = useState("");
+  const { bodyPart, setBodyPart } = useBodyPartStore();
 
   if (!id) {
     return <Text>Invalid exercise id</Text>;
@@ -25,35 +34,48 @@ const ExerciseDetail = () => {
 
   const { data } = useLiveQuery(query);
 
-  // Initialize the `name` state with the database value
+  // Initialize the `name` state with the database value and avoid re-setting it unnecessarily
   useEffect(() => {
     if (data?.length) {
-      setName(data[0].name || "");
+      setExerciseName(data[0].name || "");
+      setBodyPart(data[0].bodyPart || ""); // Set the initial body part as well
     }
-  }, [data]);
+  }, [data, setBodyPart]);
 
   // Debounce mechanism for `name`
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedName(name);
-    }, 500); // Wait for 500ms after the user stops typing
+      setDebouncedName(exerciseName);
+    }, 500);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [name]);
+  }, [exerciseName]);
 
-  // Update database when `debouncedName` changes
+  // Update the database when debounced name or body part changes
   useEffect(() => {
+    if (!data || !debouncedName || bodyPart === undefined) return; // Skip if no data or no change
+
     const updateDatabase = async () => {
-      if (debouncedName && debouncedName !== data?.[0]?.name) {
+      const currentName = debouncedName || data[0]?.name;
+      const currentBodyPart = bodyPart || data[0]?.bodyPart;
+
+      // Update the database only if there are changes
+      if (
+        currentName !== data[0]?.name ||
+        currentBodyPart !== data[0]?.bodyPart
+      ) {
         try {
-          console.log("Updating database with new name:", debouncedName);
+          console.log("Updating database with new values:", {
+            name: currentName,
+            bodyPart: currentBodyPart,
+          });
           await drizzleDb
             .update(exercises)
-            .set({ name: debouncedName })
+            .set({ name: currentName, bodyPart: currentBodyPart })
             .where(eq(exercises.id, parseInt(id as string)));
-          console.log("Exercise name updated successfully");
+          console.log("Exercise updated successfully");
         } catch (error) {
           console.error("Error updating exercise:", error);
         }
@@ -61,21 +83,29 @@ const ExerciseDetail = () => {
     };
 
     updateDatabase();
-  }, [debouncedName, data, drizzleDb, id]);
+  }, [debouncedName, bodyPart, data]);
 
   if (!data || !data[0]) {
-    return <Text>Loading...</Text>;
+    return (
+      <ActivityIndicator size={"large"} style={styles.activityIndicator} />
+    );
   }
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.largeTextInput}
-        value={name}
-        onChangeText={setName}
+        value={exerciseName}
+        onChangeText={setExerciseName}
         placeholder="Enter exercise name"
       />
-      <Text>{data[0].bodyPart}</Text>
+      <CustomButton
+        title={bodyPart || data[0].bodyPart || "Select a Bodypart"}
+        accessibilityLabel="Select a Bodypart"
+        onPress={() =>
+          router.push("/(exercise)/create-exercise/select-bodypart")
+        }
+      />
     </View>
   );
 };
@@ -84,11 +114,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    gap: 16,
   },
   largeTextInput: {
     fontSize: 36,
     fontWeight: "bold",
     marginBottom: 8,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    // size: "large",
   },
 });
 
