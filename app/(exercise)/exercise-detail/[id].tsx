@@ -5,6 +5,8 @@ import {
   TextInput,
   View,
   ActivityIndicator,
+  Alert,
+  TouchableOpacity,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
@@ -12,7 +14,8 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { exercises } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import CustomButton from "@/components/ui/CustomButton";
-import { useBodyPartStore } from "@/store";
+import { useBodyPartStore } from "@/utils/store";
+import { Colors } from "@/utils/constants";
 
 const ExerciseDetail = () => {
   const { id } = useLocalSearchParams();
@@ -85,11 +88,39 @@ const ExerciseDetail = () => {
     updateDatabase();
   }, [debouncedName, bodyPart, data]);
 
-  if (!data || !data[0]) {
+  if (!data || !data?.[0]) {
     return (
       <ActivityIndicator size={"large"} style={styles.activityIndicator} />
     );
   }
+
+  const handleDeleteExercise = async (exerciseId: number) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this exercise?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              await drizzleDb
+                .delete(exercises)
+                .where(eq(exercises.id, exerciseId));
+            } catch (error) {
+              console.error("Error deleting workout: ", error);
+            } finally {
+              router.back();
+            }
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -106,6 +137,12 @@ const ExerciseDetail = () => {
           router.push("/(exercise)/create-exercise/select-bodypart")
         }
       />
+      <TouchableOpacity
+        style={[styles.button, { marginTop: 24 }]}
+        onPress={() => handleDeleteExercise(data[0].id)}
+      >
+        <Text style={styles.destructiveButtonText}>Delete Exercise</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -115,6 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     gap: 16,
+    marginBottom: 16,
   },
   largeTextInput: {
     fontSize: 36,
@@ -126,6 +164,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     // size: "large",
+  },
+  button: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 8,
+    padding: 8,
+  },
+  buttonText: {
+    color: Colors.PRIMARY,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  destructiveButtonText: {
+    color: Colors.DESTRUCTIVE_BUTTON_TEXT,
+    fontWeight: "bold",
+    fontSize: 14,
   },
 });
 

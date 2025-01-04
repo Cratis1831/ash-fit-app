@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -19,6 +18,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { useState } from "react";
+import EmptyView from "@/components/EmptyView";
 
 const Page = () => {
   const db = useSQLiteContext();
@@ -92,6 +92,12 @@ const Page = () => {
         <FlatList
           data={data}
           keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={
+            <EmptyView
+              icon="information-circle-outline"
+              message="No exercises found"
+            />
+          }
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => router.push(`/exercise-detail/${item.id}`)}

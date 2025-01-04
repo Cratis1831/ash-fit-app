@@ -6,6 +6,7 @@ import { eq, asc } from "drizzle-orm";
 import { Colors } from "@/utils/constants";
 import { Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import EmptyView from "@/components/EmptyView";
 
 // Define types for data structure
 interface Workout {
@@ -103,7 +104,12 @@ const Page = () => {
         contentContainerStyle={styles.container}
         data={Object.values(groupedData)}
         keyExtractor={(item) => item.workout.id.toString()}
-        ListEmptyComponent={<Text>No workouts found</Text>}
+        ListEmptyComponent={
+          <EmptyView
+            icon="information-circle-outline"
+            message="No workouts found"
+          />
+        }
         renderItem={({ item: { workout, sets } }) => (
           <View style={styles.itemContainer}>
             <View style={styles.workoutHeader}>

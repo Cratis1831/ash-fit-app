@@ -1,5 +1,5 @@
 import { bodyParts } from "@/db/schema";
-import { useBodyPartStore } from "@/store";
+import { useBodyPartStore } from "@/utils/store";
 import { Colors } from "@/utils/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";

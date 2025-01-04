@@ -10,8 +10,9 @@ import { exercises } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import { Colors } from "@/utils/constants";
 import { router, Stack } from "expo-router";
-import { useWorkoutStore } from "@/store";
+import { useWorkoutStore } from "@/utils/store";
 import { Ionicons } from "@expo/vector-icons";
+import EmptyView from "@/components/EmptyView";
 
 interface ExercisePageProps {
   selectionMode: boolean;
@@ -73,6 +74,12 @@ const Page = () => {
         <FlatList
           data={data}
           keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={
+            <EmptyView
+              icon="information-circle-outline"
+              message="No exercises found"
+            />
+          }
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
@@ -103,7 +110,7 @@ export default Page;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start", // Center vertically
+    justifyContent: "flex-start",
     padding: 16,
     backgroundColor: Colors.BACKGROUND_COLOR,
   },

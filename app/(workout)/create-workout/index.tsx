@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
-import { useWorkoutStore } from "@/store";
+import { useWorkoutStore } from "@/utils/store";
 import { Ionicons } from "@expo/vector-icons";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
 import ExerciseView from "@/components/ExerciseView";
@@ -167,12 +167,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   input: {
-    borderWidth: 1,
-    borderColor: Colors.INPUT_BORDER_COLOR,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 20,
-    minWidth: 0,
+    // borderWidth: 1,
+    // borderColor: Colors.INPUT_BORDER_COLOR,
+    // borderRadius: 8,
+    // padding: 10,
+    // marginBottom: 20,
+    // minWidth: 0,
+
+    fontSize: 36,
+    fontWeight: "bold",
+    marginBottom: 16,
   },
   button: {
     flexDirection: "row",
@@ -183,10 +187,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: Colors.PRIMARY,
     fontWeight: "bold",
+    fontSize: 16,
   },
   destructiveButtonText: {
     color: Colors.DESTRUCTIVE_BUTTON_TEXT,
     fontWeight: "bold",
+    fontSize: 14,
   },
   toolbarButton: {
     marginHorizontal: 8,

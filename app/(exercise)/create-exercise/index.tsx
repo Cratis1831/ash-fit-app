@@ -16,7 +16,7 @@ import { Colors } from "@/utils/constants";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { bodyParts, exercises } from "@/db/schema";
-import { useBodyPartStore } from "@/store";
+import { useBodyPartStore } from "@/utils/store";
 import { CustomScrollView } from "@/components/ui/CustomScrollView";
 
 const Page = () => {

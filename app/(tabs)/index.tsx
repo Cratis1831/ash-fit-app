@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import * as Crypto from "expo-crypto";
 import {
   View,
@@ -8,47 +7,15 @@ import {
   FlatList,
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-} from "react-native-reanimated";
-
-import { useWorkoutStore } from "@/store";
+import { useWorkoutStore } from "@/utils/store";
 import { Colors } from "@/utils/constants";
 import Button from "@/components/Button";
 import { Divider } from "react-native-paper";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
-import PopUpButton from "@/components/ui/PopUpButton";
 
 const HomeScreen = () => {
   const router = useRouter();
   const { workout, setWorkout } = useWorkoutStore();
-
-  // const pulseOpacity = useSharedValue(1);
-
-  // useEffect(() => {
-  //   if (workout.id !== null) {
-  //     pulseOpacity.value = withRepeat(
-  //       withTiming(0.5, {
-  //         duration: 1000,
-  //         easing: Easing.inOut(Easing.ease),
-  //       }),
-  //       -1,
-  //       true // reverse animation
-  //     );
-  //   } else {
-  //     pulseOpacity.value = 1; // Reset opacity when no workout
-  //   }
-  // }, [workout]);
-
-  // const animatedStyle = useAnimatedStyle(() => {
-  //   return {
-  //     opacity: pulseOpacity.value,
-  //   };
-  // });
 
   const handleGoToWorkout = () => {
     router.push("/create-workout");

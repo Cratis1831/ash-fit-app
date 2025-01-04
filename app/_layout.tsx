@@ -3,8 +3,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { Suspense, useEffect } from "react";
-import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import * as SQLite from "expo-sqlite";
 import { openDatabaseSync, SQLiteProvider } from "expo-sqlite";
 import migrations from "@/drizzle/migrations";
 import { drizzle } from "drizzle-orm/expo-sqlite";

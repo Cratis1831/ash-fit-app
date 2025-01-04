@@ -5,9 +5,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useWorkoutStore } from "@/store";
+import { useWorkoutStore } from "@/utils/store";
 import { Colors, WeightUnits } from "@/utils/constants";
-import { Ionicons } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const ExerciseView = () => {
