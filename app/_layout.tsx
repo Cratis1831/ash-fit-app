@@ -10,11 +10,21 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { ActivityIndicator } from "react-native";
 import { addDummyData } from "@/utils/dummyData";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
+import { tokenCache } from "@/utils/cache";
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 // const db = SQLite.openDatabaseSync("db");
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+  );
+}
 
 const RootLayout = () => {
   const [loaded] = useFonts({
@@ -52,6 +62,7 @@ const RootLayout = () => {
             }}
           >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen
               name="(workout)/create-workout/index"
               options={{
@@ -113,4 +124,14 @@ const RootLayout = () => {
   );
 };
 
-export default RootLayout;
+const Layout = () => {
+  return (
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <ClerkLoaded>
+        <RootLayout />
+      </ClerkLoaded>
+    </ClerkProvider>
+  );
+};
+
+export default Layout;
