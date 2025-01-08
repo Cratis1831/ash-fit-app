@@ -10,13 +10,18 @@ import {
 interface ProfileHeaderProps {
   name: string;
   email: string;
-  image: ImageSourcePropType;
+  image: string;
 }
 const ProfileHeader = ({ name, email, image }: ProfileHeaderProps) => {
   return (
     <View style={styles.profileContainer}>
       <View style={styles.profileHeader}>
-        <Image source={image} style={styles.avatarContainer} />
+        <Image
+          source={{
+            uri: image,
+          }}
+          style={styles.avatarContainer}
+        />
         <View>
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.profileEmail}>{email}</Text>

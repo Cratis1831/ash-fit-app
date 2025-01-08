@@ -1,14 +1,24 @@
 import Leaderboard from "@/components/Leaderboard";
 import ProfileHeader from "@/components/ProfileHeader";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/utils/constants";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { Stack, useRouter } from "expo-router";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import { Button, Divider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Page = () => {
   const { signOut } = useAuth();
+  const { user } = useUser();
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -34,16 +44,29 @@ const Page = () => {
         }}
       />
       <SafeAreaView style={styles.container}>
-        <ProfileHeader
-          name="A S"
-          email="a.s@icloud.com"
-          image={require("@/assets/profiles/aiden.jpeg")}
-        />
+        <View
+          style={
+            {
+              // flexDirection: "row",
+              // justifyContent: "space-between",
+              // alignItems: "center",
+            }
+          }
+        >
+          <ProfileHeader
+            name={user?.fullName ?? "Guest"}
+            email={user?.emailAddresses[0].emailAddress ?? ""}
+            image={user?.imageUrl ?? ""}
+          />
+          <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
+            <IconSymbol
+              name="arrow.right.square"
+              size={30}
+              color={Colors.ACTIVE_TAB_ICON}
+            />
+          </TouchableOpacity>
+        </View>
         <Divider />
-
-        <Pressable onPress={handleSignOut}>
-          <Text>Sign Out</Text>
-        </Pressable>
         <Leaderboard />
       </SafeAreaView>
     </>
@@ -56,5 +79,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.BACKGROUND_COLOR,
+  },
+  logoutButton: {
+    // marginRight: 16,
+    // padding: 8,
   },
 });
